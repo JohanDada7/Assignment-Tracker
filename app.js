@@ -13,24 +13,6 @@ const PORT = process.env.PORT || 3000;
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-SESSION_SECRET = "6eb1cccc917abd353ec5db9b7090f972ec6aec1ff1a73aa95a0147e283baa556beac75e1b6e92d48f00a432b0389b97214156a2ab279c59faf5c5374cc83e361"
-
-// Validate SESSION_SECRET
-if (!SESSION_SECRET) {
-  console.error('FATAL ERROR: SESSION_SECRET is not defined');
-  process.exit(1);
-}
-
-// Session Configuration with more options
-app.use(session({
-  secret: process.env.SESSION_SECRET, // Required
-  resave: false, // Don't save session if unmodified
-  saveUninitialized: false, // Don't create session until something stored
-  cookie: {
-    secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
-  }
-}));
 
 // Flash Messages
 app.use(flash());
