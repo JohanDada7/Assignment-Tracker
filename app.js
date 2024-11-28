@@ -13,7 +13,8 @@ const PORT = process.env.PORT || 3000;
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-const SESSION_SECRET = "6eb1cccc917abd353ec5db9b7090f972ec6aec1ff1a73aa95a0147e283baa556beac75e1b6e92d48f00a432b0389b97214156a2ab279c59faf5c5374cc83e361";
+SESSION_SECRET = "6eb1cccc917abd353ec5db9b7090f972ec6aec1ff1a73aa95a0147e283baa556beac75e1b6e92d48f00a432b0389b97214156a2ab279c59faf5c5374cc83e361"
+
 // Validate SESSION_SECRET
 if (!SESSION_SECRET) {
   console.error('FATAL ERROR: SESSION_SECRET is not defined');
@@ -56,15 +57,15 @@ app.use((err, req, res, next) => {
 });
 
 //let mongoose = require('mongoose');
-//let DB = require('./db');
+let DB = require('./db');
 // point my mongoose to the URI
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(DB.URI);
 let mongoDB = mongoose.connection;
 mongoDB.on('error',console.error.bind(console,'Connection Error'))
 mongoDB.once('open',()=>{
   console.log('MongoDB Connected')
 })
-mongoose.connect(process.env.MONGODB_URI,{useNewURIParser:true,
+mongoose.connect(DB.URI,{useNewURIParser:true,
   useUnifiedTopology:true
 })
 
