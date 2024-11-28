@@ -55,16 +55,19 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Database Connection
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
+let mongoose = require('mongoose');
+let DB = require('./db');
+// point my mongoose to the URI
+mongoose.connect(DB.URI);
+let mongoDB = mongoose.connection;
+mongoDB.on('error',console.error.bind(console,'Connection Error'))
+mongoDB.once('open',()=>{
+  console.log('MongoDB Connected')
 })
-.then(() => console.log('MongoDB Connected'))
-.catch(err => {
-  console.error('MongoDB Connection Error:', err);
-  process.exit(1);
-});
+mongoose.connect(DB.URI,{useNewURIParser:true,
+  useUnifiedTopology:true
+})
+
 
 // Server Start
 app.listen(PORT, () => {
